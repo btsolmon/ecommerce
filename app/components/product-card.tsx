@@ -1,7 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
+
 export const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <div className="group rounded-2xl border border-zinc-200 bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 dark:border-zinc-800 dark:bg-zinc-900">
+    <Link
+      href={`/product/${product.id}`}
+      className="block group rounded-2xl border border-zinc-200 bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 dark:border-zinc-800 dark:bg-zinc-900"
+    >
       <div className="relative overflow-hidden rounded-t-2xl bg-zinc-100 dark:bg-zinc-800">
         <img
           src={product.thumbnail}
@@ -29,7 +34,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
             {[1, 2, 3, 4, 5].map((star) => (
               <svg
                 key={star}
-                className={`h-4 w-4 ${star <= 5 ? "text-amber-400" : "text-zinc-200 dark:text-zinc-700"}`}
+                className={`h-4 w-4 ${star <= Math.round(product?.rating || 0) ? "text-amber-400" : "text-zinc-200 dark:text-zinc-700"}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -42,6 +47,6 @@ export const ProductCard = ({ product }: { product: Product }) => {
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
