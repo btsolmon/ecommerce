@@ -1,5 +1,5 @@
 import { Product } from "../types";
-import { ProductCard } from "./Product-card";
+import { ProductCard } from "./product-card";
 
 export const ProductList = ({
   products,

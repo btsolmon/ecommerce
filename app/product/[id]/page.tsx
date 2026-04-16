@@ -1,31 +1,18 @@
 "use client";
 
 import { Product } from "@/app/types";
-
-// TODO 2: useParams импортлох
-// import { useParams } from "next/navigation";
-
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-// TODO 3: Product төрөл зарлах
-// API: https://dummyjson.com/products/{id}
-// Хариу: { id, title, description, price, discountPercentage, rating, stock, brand, category, thumbnail, images, ... }
+import { Footer } from "@/app/components/footer";
+import { Header2 } from "@/app/components/header2";
 
 export default function ProductDetail() {
-  // TODO 4: URL-ээс id параметр авах
-  // const { id } = useParams();
   const { id } = useParams();
-
-  // TODO 5: State хувьсагчдыг зарлах (product, loading, error)
   const [product, setProduct] = useState<Product>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [imageIndex, setImageIndex] = useState("");
 
-  // TODO 6: useEffect-ээр бүтээгдэхүүний мэдээлэл татах
-  // URL: `https://dummyjson.com/products/${id}`
-  // dependency array: [id]
   useEffect(() => {
     let responseStatus = 200;
     fetch(`https://dummyjson.com/products/${id}`)
@@ -36,19 +23,18 @@ export default function ProductDetail() {
       .then((data) => {
         if (responseStatus === 200) {
           setProduct(data);
+          setImageIndex(data.images[0]);
         } else {
           setError(data.message);
         }
+        setLoading(false);
       });
   }, []);
 
-  // TODO 7: Ачааллын төлөв (loading state)
   if (loading)
     return (
       <div className="p-20 text-center dark:text-white">Ачаалж байна...</div>
     );
-
-  // TODO 8: Алдааны төлөв (error state)
   if (error) return <>{error}</>;
   if (!product) return null;
 
@@ -56,41 +42,19 @@ export default function ProductDetail() {
     product.price -
     (product.price * product.discountPercentage) / 100
   ).toFixed(2);
-
+  const handleClick = (img) => {
+    setImageIndex(img);
+  };
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Header */}
-      <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mx-auto max-w-7xl px-6 py-6">
-          <div className="flex items-center gap-4">
-            {/* TODO 9: Link компонент ашиглах (next/link) */}
-            <Link
-              href="/"
-              className="rounded-lg border border-zinc-200 px-3 py-1.5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
-            >
-              &larr; Буцах
-            </Link>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                Product Store
-              </h1>
-              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                Product detail
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
+     <Header2/>
       <main className="mx-auto max-w-7xl px-6 py-10">
-        {/* TODO 10: Доорх hardcode-г product state-ээр солих */}
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-          {/* Image Section */}
           <div>
             <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
               <img
-                src={product.thumbnail}
+                src={imageIndex}
                 alt={product.title}
                 className="h-96 w-full object-cover"
               />
@@ -102,12 +66,13 @@ export default function ProductDetail() {
               {product.images.map((image: string) => (
                 <button
                   key={image}
-                  className="overflow-hidden rounded-xl border-2 border-zinc-900 dark:border-zinc-100"
+                  className="overflow-hidden rounded-xl border border-zinc-300 hover:border-2 border-transparent transition-all duration-200 hover:border-zinc-900 dark:border-zinc-700 dark:hover:border-zinc-100"
+                  onClick={() => handleClick(image)}
                 >
                   <img
                     src={image}
                     alt="Thumbnail 1"
-                    className="h-20 w-full object-cover"
+                    className="h-20 w-full object-cover transition-opacity hover:opacity-40"
                   />
                 </button>
               ))}
@@ -115,22 +80,15 @@ export default function ProductDetail() {
           </div>
           {/* Product Info Section */}
           <div>
-            {/* Category Badge */}
             <span className="inline-block rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
               {product.category}
             </span>
-
-            {/* Title */}
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
               {product.title}
             </h2>
-
-            {/* Brand */}
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
               {product.brand}
             </p>
-
-            {/* Rating */}
             <div className="mt-4 flex items-center gap-2">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -152,11 +110,7 @@ export default function ProductDetail() {
                 {product.rating}
               </span>
             </div>
-
-            {/* Price */}
             <div className="mt-6 flex items-baseline gap-3">
-              {/* TODO 12: Хямдралтай үнэ тооцоолох */}
-              {/* Хямдралтай үнэ = price - (price * discountPercentage / 100) */}
               <span className="text-3xl font-bold">${discountedPrice}</span>
               <span className="text-lg text-zinc-400 line-through">
                 ${product.price}
@@ -165,19 +119,13 @@ export default function ProductDetail() {
                 -{product.discountPercentage}%
               </span>
             </div>
-
-            {/* Description */}
             <p className="mt-6 leading-relaxed text-zinc-600 dark:text-zinc-400">
               {product.description}
             </p>
-
-            {/* Product Details */}
             <div className="mt-8 space-y-4 rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                 Дэлгэрэнгүй мэдээлэл
               </h3>
-
-              {/* TODO 13: product state-ээс утга авах */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-xs text-zinc-400 dark:text-zinc-500">
@@ -229,10 +177,6 @@ export default function ProductDetail() {
                 </div>
               </div>
             </div>
-
-            {/* Stock Status */}
-            {/* TODO 14: Үлдэгдлийн тоогоор өнгө өөрчлөх */}
-            {/* stock > 50: emerald, stock > 10: amber, stock <= 10: red */}
             <div className="mt-6 flex items-center gap-2">
               <span
                 className={`h-2.5 w-2.5 rounded-full ${
@@ -253,15 +197,14 @@ export default function ProductDetail() {
                 }`}
               >
                 {product.stock > 50
-                  ? "Хангалттай үлдэгдэл"
+                  ? `Хангалттай үлдэгдэл - ${product.stock} ширхэг`
                   : product.stock > 10
-                    ? "Цөөхөн үлдсэн"
+                    ? `Цөөхөн үлдсэн - ${product.stock} ширхэг`
                     : `Бага үлдэгдэл — зөвхөн ${product.stock} ширхэг`}
               </span>
             </div>
 
             {/* Reviews Section */}
-            {/* TODO 15: product.reviews массивыг map-аар гүйлгэх */}
             <div className="mt-8">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                 Сэтгэгдлүүд
@@ -298,13 +241,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="mt-auto border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mx-auto max-w-7xl px-6 py-4 text-center text-xs text-zinc-400">
-          Exercise App &middot; Data from dummyjson.com
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 }

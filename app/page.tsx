@@ -4,13 +4,13 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { ProductApiResponse } from "./types";
-import { ProductCard } from "./components/Product-card";
-import { Pagination } from "./components/Pagination";
-import { ProductList } from "./components/Product-list";
-import { SearchBar } from "./components/Search-bar";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
-import { Nav } from "./components/Nav";
+import { ProductCard } from "./components/product-card";
+import { Pagination } from "./components/pagination";
+import { ProductList } from "./components/product-list";
+import { SearchBar } from "./components/search-bar";
+import { Header } from "./components/header";
+import { Footer } from "./components/footer";
+import { Nav } from "./components/nav";
 
 const PRODUCTS_PER_PAGE = 10;
 
