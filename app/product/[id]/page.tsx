@@ -48,7 +48,7 @@ export default function ProductDetail() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Header */}
-     <Header2/>
+      <Header2 />
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           <div>
@@ -241,7 +241,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
