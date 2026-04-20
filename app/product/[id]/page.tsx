@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Footer } from "@/app/components/footer";
 import { Header2 } from "@/app/components/header2";
+import { ReviewList } from "@/app/components/review-section";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -47,7 +48,6 @@ export default function ProductDetail() {
   };
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      {/* Header */}
       <Header2 />
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
@@ -203,41 +203,7 @@ export default function ProductDetail() {
                     : `Бага үлдэгдэл — зөвхөн ${product.stock} ширхэг`}
               </span>
             </div>
-
-            {/* Reviews Section */}
-            <div className="mt-8">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                Сэтгэгдлүүд
-              </h3>
-              <div className="mt-4 space-y-4">
-                {product.reviews?.map((review, i) => (
-                  <div
-                    key={i}
-                    className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">
-                        {review.reviewerName}
-                      </span>
-                      <div className="flex text-amber-400">
-                        {[1, 2, 3, 4, 5].map((s) => (
-                          <svg
-                            key={s}
-                            className={`h-3 w-3 ${s <= review.rating ? "fill-current" : "text-zinc-200"}`}
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                        ))}
-                      </div>
-                    </div>
-                    <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                      {review.comment}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ReviewList reviews={product.reviews} />
           </div>
         </div>
       </main>
@@ -249,5 +215,4 @@ export default function ProductDetail() {
 // БОНУС TODO 16: Компонент болгон задлах
 //   - app/components/ProductImageGallery.tsx
 //   - app/components/ProductInfo.tsx
-//   - app/components/ReviewCard.tsx
 //   - app/components/StockBadge.tsx

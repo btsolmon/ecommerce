@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Header2 } from "@/app/components/header2";
 import { Footer } from "@/app/components/footer";
-import Link from "next/link";
+import { UserContext } from "../providers/user-provider";
+import { useRouter } from "next/navigation";
 
 // TODO 3: LoginResponse төрөл зарлах
 // API: https://dummyjson.com/auth/login
@@ -13,7 +14,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   // TODO 4: useRouter hook ашиглах
-
+  const router = useRouter();
   // TODO 5: State хувьсагчдыг зарлах
   // username - нэвтрэх нэр, эхлэх утга: ""
   // password - нууц үг, эхлэх утга: ""
@@ -21,8 +22,13 @@ export default function LoginPage() {
   // loading  - ачааллын төлөв, эхлэх утга: false
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState<User | null>(null);
+  const { user, setUser } = useContext(UserContext);
 
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user]);
   // TODO 6: handleSubmit функц бичих
   // 1. e.preventDefault() дуудах
   // 2. error хоослох, loading true болгох
@@ -113,7 +119,9 @@ export default function LoginPage() {
               <button
                 type="submit"
                 className="w-full rounded-xl bg-zinc-900 px-4 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-              ></button>
+              >
+                Нэвтрэх
+              </button>
 
               <p className="mt-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
                 Туршилт: <span className="font-mono">emilys</span> /{" "}
