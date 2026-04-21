@@ -51,6 +51,7 @@ export default function Home() {
         setLoading(false);
       });
   }, [search, skip, category]);
+
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value);
     setCategory("");

@@ -7,7 +7,7 @@ import { Footer } from "@/app/components/footer";
 import { Header2 } from "@/app/components/header2";
 import { ProductInfo } from "@/app/components/product-info";
 import { ProductGallery } from "@/app/components/product-gallery";
-
+import axios from "axios";
 export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product>(null);
@@ -16,21 +16,31 @@ export default function ProductDetail() {
   const [imageIndex, setImageIndex] = useState("");
 
   useEffect(() => {
-    let responseStatus = 200;
-    fetch(`https://dummyjson.com/products/${id}`)
-      .then((res) => {
-        responseStatus = res.status;
-        return res.json();
-      })
-      .then((data) => {
-        if (responseStatus === 200) {
-          setProduct(data);
-          setImageIndex(data.images[0]);
-        } else {
-          setError(data.message);
-        }
-        setLoading(false);
-      });
+    // let responseStatus = 200;
+    axios.get(`https://dummyjson.com/products/${id}`).then((res) => {
+      if (res.status === 200) {
+        setProduct(res.data);
+        setImageIndex(res.data.images[0]);
+      } else {
+        setError(res.data.message);
+      }
+      setLoading(false);
+    });
+
+    // fetch(`https://dummyjson.com/products/${id}`)
+    //   .then((res) => {
+    //     responseStatus = res.status;
+    //     return res.json();
+    //   })
+    //   .then((data) => {
+    //     if (responseStatus === 200) {
+    //       setProduct(data);
+    //       setImageIndex(data.images[0]);
+    //     } else {
+    //       setError(data.message);
+    //     }
+    //     setLoading(false);
+    //   });
   }, []);
 
   if (loading)

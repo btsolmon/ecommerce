@@ -5,6 +5,7 @@ import { Header2 } from "@/app/components/header2";
 import { Footer } from "@/app/components/footer";
 import { UserContext } from "../providers/user-provider";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 // TODO 3: LoginResponse төрөл зарлах
 // API: https://dummyjson.com/auth/login
@@ -42,21 +43,28 @@ export default function LoginPage() {
     // 1. e.preventDefault() дуудах
     e.preventDefault();
     // 2. error хоослох, loading true болгох
-    fetch("https://dummyjson.com/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ username, password }),
-      headers: {
-        "Content-type": "application/json",
-        Accepts: "application/json",
-      },
-    })
+    axios
+      .post("https://dummyjson.com/auth/login", { username, password })
       .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setUser(data);
+        setUser(res.data);
+        router.push("/");
       });
   };
+  //   fetch("https://dummyjson.com/auth/login", {
+  //     method: "POST",
+  //     body: JSON.stringify({ username, password }),
+  //     headers: {
+  //       "Content-type": "application/json",
+  //       Accepts: "application/json",
+  //     },
+  //   })
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       setUser(data);
+  //     });
+  // };
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
