@@ -26,7 +26,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         fetch("https://dummyjson.com/auth/me", {
           method: "GET",
           headers: {
-            Authorization: "Bearer" + token,
+            Authorization: "Bearer " + token,
           },
         })
           .then((res) => {

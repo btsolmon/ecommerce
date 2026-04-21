@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ProductApiResponse } from "./types";
 import { ProductCard } from "./components/product-card";
 import { Pagination } from "./components/pagination";
